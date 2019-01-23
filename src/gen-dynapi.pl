@@ -529,10 +529,10 @@ EOF
     $type $var;
     BITCODE_BL count = 0;
     if (dwg_dynapi_entity_value($lname, "$name", "$countfield", &count, NULL) &&
-        dwg_dynapi_entity_value($lname, "$name", "$var", &$svar, NULL)
+        dwg_dynapi_entity_values($lname, "$name", "$var", &$svar, count)
 EOF
         if ($type !~ /\*\*/) {
-          print $fh "        && $svar == $lname->$svar";
+          print $fh "        && (!count || !memcmp(&$svar, &$lname->$svar, count * sizeof($lname->$svar)))\n";
         }
         print $fh ")\n";
         print $fh <<"EOF";
@@ -790,6 +790,8 @@ dwg_dynapi_entity_values(void *restrict _obj, const char *restrict name,
 {
   if (!_obj)
     return false;
+  if (!count)
+    return true;
   {
     int error;
     // check the object type
@@ -810,14 +812,12 @@ dwg_dynapi_entity_values(void *restrict _obj, const char *restrict name,
           LOG_ERROR("%s: Invalid %s field %s", __FUNCTION__, name, fieldname);
           return false;
         }
-      //TODO: if (f->malloc)
-      //  which size? if text strcpy. if TU wcscpy. if struct num_fieldname * f->size
       memcpy(out, &((char*)_obj)[f->offset], count * f->size);
       return true;
     }
   }
 }
- 
+
 EXPORT bool
 dwg_dynapi_header_value(const Dwg_Data *restrict dwg, const char *restrict fieldname,
                         void *restrict out, Dwg_DYNAPI_field *restrict fp)
@@ -972,6 +972,8 @@ dwg_dynapi_entity_set_values(void *restrict _obj, const char *restrict name,
 {
   if (!_obj)
     return false;
+  if (!count)
+    return true;
   {
     int error;
     const Dwg_Object* obj = dwg_obj_generic_to_object(_obj, &error);
