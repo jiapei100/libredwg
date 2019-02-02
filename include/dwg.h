@@ -1317,6 +1317,20 @@ typedef struct _dwg_entity_DIMENSION_DIAMETER
 } Dwg_Entity_DIMENSION_DIAMETER;
 
 /**
+ arc dimension - ARC_DIMENSION (varies) entity
+ */
+typedef struct _dwg_entity_ARC_DIMENSION
+{
+  DIMENSION_COMMON
+  BITCODE_3BD _13_pt;
+  BITCODE_3BD _14_pt;
+  BITCODE_3BD _15_pt;
+  BITCODE_RC flag2;
+  BITCODE_H dimstyle;
+  BITCODE_H block;
+} Dwg_Entity_ARC_DIMENSION;
+
+/**
  Struct for:  POINT (27)
  */
 typedef struct _dwg_entity_POINT
@@ -5138,6 +5152,7 @@ typedef struct _dwg_object_entity
     Dwg_Entity_TABLE *TABLE;
     Dwg_Entity_UNDERLAY *UNDERLAY;
     Dwg_Entity_WIPEOUT *WIPEOUT;
+    Dwg_Entity_ARC_DIMENSION *ARC_DIMENSION;
 
     Dwg_Entity_UNKNOWN_ENT *UNKNOWN_ENT;
   } tio;
@@ -5234,7 +5249,6 @@ typedef struct _dwg_object_object
     Dwg_Object_ACSH_SWEEP_CLASS *ACSH_SWEEP_CLASS;
     Dwg_Object_ACDBNAVISWORKSMODELDEF *ACDBNAVISWORKSMODELDEF;
     //TODO Dwg_Object_ARCALIGNEDTEXT *ARCALIGNEDTEXT;
-    //TODO Dwg_Object_ARC_DIMENSION *ARC_DIMENSION;
     Dwg_Object_ASSOC2DCONSTRAINTGROUP *ASSOC2DCONSTRAINTGROUP;
     Dwg_Object_ASSOCACTION *ASSOCACTION;
     Dwg_Object_ASSOCALIGNEDDIMACTIONBODY *ASSOCALIGNEDDIMACTIONBODY;
@@ -5915,7 +5929,7 @@ EXPORT int dwg_add_ACDBNAVISWORKSMODELDEF (Dwg_Object *obj);
 //EXPORT int dwg_add_ACSH_HISTORY_CLASS (Dwg_Object *obj);
 EXPORT int dwg_add_ACSH_SWEEP_CLASS (Dwg_Object *obj);
 //EXPORT int dwg_add_ARCALIGNEDTEXT (Dwg_Object *obj);
-//EXPORT int dwg_add_ARC_DIMENSION (Dwg_Object *obj);
+EXPORT int dwg_add_ARC_DIMENSION (Dwg_Object *obj);
 //EXPORT int dwg_add_ASSOCGEOMDEPENDENCY (Dwg_Object *obj);
 EXPORT int dwg_add_ASSOCOSNAPPOINTREFACTIONPARAM (Dwg_Object *obj);
 EXPORT int dwg_add_ASSOCPERSSUBENTMANAGER (Dwg_Object *obj);
